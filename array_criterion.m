@@ -6,13 +6,14 @@ end
 
 C=0;
 for d=1:length(doa)
-    total_frf=f_weights; %frf over all mics at this doa
+    total_frf=ones(1,length(f_range)); %Center mic is in phase with itself at all f
     for m=1:size(mics,1)
         %noise frf of this mic after voice alignment
         frf=get_frf(mics(m,:),doa(d),-1i,f_range).*f_weights;
         total_frf=total_frf+frf;
     end
-    C=C+sum(total_frf.^2); %Cumlative sum of squared pressure
+    pressure=abs(total_frf)/(length(p)/2+1);
+    C=C+sum(pressure.^2); %Cumlative sum of squared pressure
 end
 C=C/length(doa)/length(f_range); %Normalize over sum dimensions
 

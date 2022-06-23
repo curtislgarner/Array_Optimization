@@ -25,11 +25,11 @@ classdef mic_array
             frf=zeros(size(obj.p,1),length(obj.a_range),length(obj.f_range));
             for m=1:size(obj.p,1)
                 for i=1:length(obj.a_range)
-                    frf(m,i,:)=mic_array.get_FRF(obj.p(m,:),exp(1j*obj.a_range(i)),-1i,obj.f_range);
+                    frf(m,i,:)=get_frf(obj.p(m,:),exp(1j*obj.a_range(i)),-1i,obj.f_range);
                 end
                 obj.FRF=obj.FRF+squeeze(frf(m,:,:));
             end            
-            obj.FRF=(obj.FRF+1)/(size(obj.p,1)+1); %Add center cignal, divide by n
+            obj.FRF=abs(obj.FRF+1)/(size(obj.p,1)+1); %Add center cignal, divide by n
             obj.FRF=10*log10(obj.FRF.^2); %Convert to dB
             obj.FRF(obj.FRF<-40)=-40; %Set floor to -40dB
         end
@@ -84,12 +84,4 @@ classdef mic_array
         
     end
     
-    methods(Static)
-        function FRF=get_FRF(p,dVoice,dNoise,f_range) %2-mic obj.FRF in 1D
-            av=angle(dVoice)-atan2(p(2),p(1));
-            an=angle(dNoise)-atan2(p(2),p(1));
-            ndelay=(cos(av)-cos(an))*sqrt(p(2)^2+p(1)^2)/343;
-            FRF=cos(ndelay*f_range*2*pi);
-        end
-    end
 end
