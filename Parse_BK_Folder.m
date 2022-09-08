@@ -84,11 +84,21 @@ Q = [0 -.487];
     % m = miscellaneous signal (cab)
 % Designation='teeeeeeeeeceerrm';
 
-%% m4_f500_1500_a0_135
-Names={'time','Center','2','3','4'};
-Locations=[NaN NaN; 0 0; 0.0025 -0.0723; -0.0528 -0.0651; -0.0511 -0.1371];
-Designation='tceee';
+%% m4_f500_2000_a0_135
+% Names={'time','Center','2','3','4'};
+% Locations=[NaN NaN; 0 0; 0.0064 -0.0712; 0.0859 0.1258; 0.0269 0.0665];
+% Designation='tceee';
 
+%% m5_f300_1500_a0_180
+
+% Names={'time','Center','2','3','4','5'};
+% Locations=[NaN NaN; 0 0; 0.0312 -0.0987; -0.0105 0.0989; 0.1915 0.0981; 0.0334 -0.1971];
+% Designation='tceeee';
+
+%% m4_f800_2300_a90_225
+Names={'time','Center','2','3','4'};
+Locations=[NaN NaN; 0 0; 0.0159 -0.0610; -0.1053 0.0253; -0.0913 -0.0365];
+Designation='tceee';
 
 
 %% %%%%% END OF INPUTS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

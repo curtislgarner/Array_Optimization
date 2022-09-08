@@ -46,12 +46,15 @@ classdef Signal
             N=length(x);
             nfft=round(N/obj.Fs)*2;
             Lfft=obj.Fs;
+            smooth=0;
 
             for i=1:nargin-1
                 if strcmp(varargin{i},'nfft') && ~isempty(varargin{i+1})
                     nfft=varargin{i+1};
                 elseif strcmp(varargin{i},'lfft') && ~isempty(varargin{i+1})
                     Lfft=varargin{i+1};
+                elseif strcmp(varargin{i},'smooth') && ~isempty(varargin{i+1})
+                    smooth=varargin{i+1};
                 end
             end
             %set block translation
@@ -67,6 +70,9 @@ classdef Signal
             Xss=X(1:floor(Lfft/2))/nfft;
             Xi=Xi(:,1:floor(Lfft/2));
             hist=20*log10(Xi/20e-6);
+            if smooth>0
+                Xss=smoothdata(Xss,2,'gaussian',smooth);
+            end
             amps_dB=20*log10(Xss/20e-6);
             df=obj.Fs/Lfft;
             f=0:df:(Lfft/2-1)*df;

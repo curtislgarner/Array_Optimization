@@ -4,11 +4,11 @@ clear; clc;
 % Angle_ranges=[3*pi/4 pi; pi/4 3*pi/4; 0 3*pi/4; 0 pi; -pi/4 pi];
 
 Number_of_mics=4;
-Angle_ranges=[0 3*pi/4];
+Angle_ranges=[pi/2 5*pi/4];
 
-fRange=500:2000;
+fRange=800:2300;
 N_start=20;
-Range=[-0.25 0.25; -0.375 0.375];
+Range=[-0.35 0.35; -0.375 0.375];
 
 nOpt=length(Number_of_mics)*size(Angle_ranges,1)*N_start;
 
@@ -17,7 +17,7 @@ tx=strcat(num2str(1),{' of '},num2str(nOpt),' Optimizations');
 fprintf(char(tx))
 
 options = optimoptions('fmincon','Display','off');
-cOpt=0;
+cOpt=1;
 for n=1:length(Number_of_mics)
     for a=1:size(Angle_ranges,1)
         N_mics=Number_of_mics(n);
@@ -29,6 +29,7 @@ for n=1:length(Number_of_mics)
             p=startpoints(:,i);
             [p_star(i,:),C(i),flags(i)]=fmincon(@(p)array_criterion(p,doa,fRange,fWeights),p,[],[],[],[],repmat(Range(:,1)',1,(N_mics-1)),repmat(Range(:,2)',1,(N_mics-1)),@linearity_bound,options);
             cOpt=cOpt+1;
+            Cstart(i)=array_criterion(p,doa,fRange,fWeights);
             %Text output
             fprintf(repmat('\b',1,length(char(tx))));
             tx=strcat(num2str(cOpt),{' of '},num2str(nOpt),{' Optimizations'});

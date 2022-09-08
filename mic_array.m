@@ -34,7 +34,13 @@ classdef mic_array
             obj.FRF(obj.FRF<-40)=-40; %Set floor to -40dB
         end
         
-        function plot_FRF(obj)
+        function plot_FRF(obj,varargin)
+            smooth=0;
+            for i=1:nargin-1
+                if strcmp(varargin{i},'smooth')
+                    smooth=1;
+                end
+            end
             figure();
             subplot(1,5,1:2)
             set(gcf, 'Units', 'Normalized', 'OuterPosition', [0.1, 0.17, 0.8, 0.8]);
@@ -59,7 +65,12 @@ classdef mic_array
             subplot(1,5,3:5)
             [fr,th]=meshgrid(obj.f_range,obj.a_range);
             [x,y]=pol2cart(th,fr);
+            if smooth
+                FRF_smooth = conv2(obj.FRF, ones(31,1)/31, 'same');
+            surf(x,y,FRF_smooth)
+            else
             surf(x,y,obj.FRF)
+            end
             shading interp
             set(gca,'DataAspectRatio',[500 500 20])
             set(gca, 'XAxisLocation', 'origin', 'YAxisLocation', 'origin')
